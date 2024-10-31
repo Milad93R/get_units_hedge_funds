@@ -137,8 +137,3 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-### Key Updates
-- **Excel Data Conversion**: Added a section for converting Excel data into a DataFrame, including the appropriate command.
-
-Feel free to modify any additional details based on your project's requirements!
