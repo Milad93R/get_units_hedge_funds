@@ -1,0 +1,7 @@
+# *.sqlite3
+*.env
+*__pycache__
+*.stash.py
+auto_git.py
+# *.xlsx
+# migrations/

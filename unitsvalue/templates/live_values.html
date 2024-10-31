@@ -1,0 +1,60 @@
+<!-- templates/unitsvalue/history_values.html -->
+{% load custom_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crawl Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
+    <script type="text/javascript" src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
+    <style>
+        /* Set the body to support RTL */
+        body {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-4">درصد اهرمی لحظه‌ای هر صندوق</h1>
+        <div class="overflow-x-auto max-w-xl">
+            <table class="min-w-full  bg-white border border-gray-300 rounded-lg shadow-md" >
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-right">صندوق سرمایه‌گذاری</th>
+                        <th class="py-3 px-6 text-right">درصد اهرمی</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    {% for unit in live_percent_units %}
+                        <tr class="border-b border-gray-300 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-right">{{ unit.funds.name }}</td>
+                            <td class="py-3 px-6 text-right">{{ unit.text|to_persian_number }}%</td>  <!-- Persian number -->
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2" class="py-3 px-6 text-center">نتیجه یافت نشد.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% comment %} <input data-jdp> {% endcomment %}
+    <script>
+        jalaliDatepicker.startWatch({
+            dayRendering:function(dayOptions,input){
+              return {
+               isHollyDay: dayOptions.month==1 && dayOptions.day <= 4,
+               // isValid = false, امکان غیر فعال کردن روز
+               // className = "nowruz" امکان افزودن کلاس برای درج استایل به روز
+              }
+            }
+          })
+    </script>
+</body>
+</html>

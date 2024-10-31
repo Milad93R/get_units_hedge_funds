@@ -1,0 +1,134 @@
+<!-- templates/unitsvalue/history_values.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
+    <script type="text/javascript" src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-jalaali/2.11.0/moment-jalaali.min.js"></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Data Table</title>
+    <style>
+        /* Set the body to support RTL */
+        body {
+            direction: rtl;
+        }
+
+        /* Minimal Scrollbar Styles */
+        .table-container::-webkit-scrollbar {
+            width: 8px; /* Width of the scrollbar */
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #aaa; /* Color of the scrollbar thumb */
+            border-radius: 10px; /* Round corners of the scrollbar */
+        }
+
+        .table-container {
+            position: relative;
+            overflow-y: auto;
+            max-height: 400px; /* Adjust this value as needed */
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: white; /* Background color for the sticky header */
+            z-index: 10; /* Ensure it stays above the table rows */
+        }
+
+        th {
+            padding: 10px; /* Adjust padding if necessary */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold mb-4">Data Table</h1>
+
+    <div class="flex mb-4 space-x-4">
+        <div class="flex flex-col">
+            <h1 class="text-xl mb-2">از تاریخ</h1>
+            <input data-jdp id="input1" class="border border-gray-300 rounded p-2 w-full max-w-xs">
+        </div>
+        <div class="flex flex-col">
+            <h1 class="text-xl mb-2">تا تاریخ</h1>
+            <input data-jdp id="input2" class="border border-gray-300 rounded p-2 w-full max-w-xs">
+        </div>
+        <button id="filterButton" class="self-end bg-blue-500 text-white rounded p-2 hover:bg-blue-600">فیلتر</button>
+    </div>
+
+    <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-lg table-container">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm">
+                    {% for header in headers %}
+                        <th class="py-3 px-4 border-b">{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody id="dataBody">
+                {% for row in rows %}
+                    <tr class="border-b hover:bg-gray-100">
+                        {% for value in row %}
+                            <td class="py-3 px-4 text-center">
+                                {% if value == 'NaN' or value is none %}
+                                    -
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Jalali Datepicker Initialization -->
+    <script>
+        jalaliDatepicker.startWatch({
+            dayRendering: function(dayOptions, input) {
+                return {
+                    isHollyDay: dayOptions.month == 1 && dayOptions.day <= 4,
+                }
+            }
+        });
+    </script>
+
+    <!-- Filter Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const fromDate = document.getElementById('input1').value;
+                const toDate = document.getElementById('input2').value;
+
+                if (!fromDate || !toDate) {
+                    alert("لطفاً هر دو تاریخ را وارد کنید.");
+                    return;
+                }
+
+                // Convert Shamsi dates to Gregorian
+                const fromGregorian = moment.jalaali(fromDate, 'YYYY/MM/DD').toDate();
+                const toGregorian = moment.jalaali(toDate, 'YYYY/MM/DD').toDate();
+
+                const rows = document.querySelectorAll('#dataBody tr');
+                rows.forEach(row => {
+                    const dateCell = row.cells[0].innerText; // Assuming the date is in the first column
+                    const rowDate = moment.jalaali(dateCell, 'YYYY/MM/DD').toDate();
+
+                    // Check if the rowDate is between fromGregorian and toGregorian
+                    if (rowDate >= fromGregorian && rowDate <= toGregorian) {
+                        row.style.display = ''; // Show row
+                    } else {
+                        row.style.display = 'none'; // Hide row
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
