@@ -1,4 +1,3 @@
-```markdown
 # Unit Hedge Funds Scraper
 
 A sample project to scrape data from hedge funds and display it in a Django application.
@@ -12,7 +11,6 @@ A sample project to scrape data from hedge funds and display it in a Django appl
 - [Running the Project](#running-the-project)
 - [Setting Up Real-Time Data](#setting-up-real-time-data)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -21,9 +19,9 @@ A sample project to scrape data from hedge funds and display it in a Django appl
 
 ## Technologies Used
 
-- **Django**: Version 3.2 (or your specific version)
-- **Python**: Version 3.9 (or your specific version)
-- **Database**: SQLite
+- **Django**: Version 4.2 
+- **Python**: Version 3.9 
+- **Database**: SQLite (a sample database file is included for ease of use)
 - **Frontend**: HTML, CSS, JavaScript, Tailwind CSS
 - **Additional Libraries**: `requests`, `beautifulsoup4`, `pandas`
 
@@ -59,6 +57,8 @@ A sample project to scrape data from hedge funds and display it in a Django appl
    ```bash
    python manage.py migrate
    ```
+
+   *Note: A sample database file is included in the project to make initial usage easier. You can start using the project without needing to create a new database from scratch.*
 
 6. Create a superuser (optional):
 
@@ -132,8 +132,3 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 3. Commit your changes (`git commit -m 'Add some feature'`).
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
